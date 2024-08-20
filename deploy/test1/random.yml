@@ -1,35 +1,36 @@
+KEY: '12345'
 apiVersion: ops.plivo.com/v1alpha1
 kind: WebService
 metadata:
   name: paas
   namespace: devops
 spec:
-  image: 857556598075.dkr.ecr.us-west-1.amazonaws.com/plivo/devops/paas:dev-d5984ad-1722497106221
-  consul: https://consul.non-prod.plivops.com
-  replicas: 1
-  resources:
-    requests:
-      cpu: '1.5'
-      memory: 2Gi
-    limits:
-      cpu: '2'
-      memory: 3Gi
-  containerPort: 3000
   advanced:
     exposePodInfo: true
+  consul: https://consul.non-prod.plivops.com
+  containerPort: 3000
+  image: 857556598075.dkr.ecr.us-west-1.amazonaws.com/plivo/devops/paas:dev-d5984ad-1722497106221
   loadbalancing:
-    useCommonLoadbalancer: true
-    public: false
     listenerPorts:
     - 443
+    public: false
     targetGroup:
       healthcheck:
         path: /
+    useCommonLoadbalancer: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: '2'
+      memory: 3Gi
+    requests:
+      cpu: '1.5'
+      memory: 2Gi
   securityContext:
-    runAsUser: 0
-    runAsNonRoot: false
-    runAsGroup: 0
+    allowPrivilegeEscalation: true
     fsGroup: 0
     privileged: true
     readOnlyRootFilesystem: false
-    allowPrivilegeEscalation: true  
+    runAsGroup: 0
+    runAsNonRoot: false
+    runAsUser: 0
