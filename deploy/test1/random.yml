@@ -1,48 +1,35 @@
----
 apiVersion: ops.plivo.com/v1alpha1
 kind: WebService
 metadata:
-  name: pgadmin
+  name: paas
   namespace: devops
 spec:
-  image: 857556598075.dkr.ecr.us-west-1.amazonaws.com/plivo/pgadmin:pgadmin-patch-23.02.03.1
-  persistence:
-    enabled: true
-    mountPath: /var/lib/pgadmin
-    storageClass: gp3
-    storageSize: 10
-    podManagementPolicy: OrderedReady
-  lifecycle:
-    minReadySeconds: 60
-  containerPort: 80
-  loadbalancing:
-    externalDNSNames:
-    - pgadmin.non-prod.plivops.com
-    targetGroup:
-      healthcheck:
-        protocol: HTTP
-        path: /misc/ping
+  image: 857556598075.dkr.ecr.us-west-1.amazonaws.com/plivo/devops/paas:dev-d5984ad-1722497106221
+  consul: https://consul.non-prod.plivops.com
+  replicas: 1
   resources:
     requests:
-      cpu: '20m'
-      memory: 225Mi
+      cpu: '1.5'
+      memory: 2Gi
     limits:
-      cpu: '0.5'
-      memory: 512Mi
-  consul: https://consul.non-prod.plivops.com
+      cpu: '2'
+      memory: 3Gi
+  containerPort: 3000
+  advanced:
+    exposePodInfo: true
+  loadbalancing:
+    useCommonLoadbalancer: true
+    public: false
+    listenerPorts:
+    - 443
+    targetGroup:
+      healthcheck:
+        path: /
   securityContext:
-    runAsUser: 5050
+    runAsUser: 0
     runAsNonRoot: false
     runAsGroup: 0
-    allowPrivilegeEscalation: true
----
-# apiVersion: policy/v1
-# kind: PodDisruptionBudget
-# metadata:
-#   name: pgadmin
-#   namespace: devops
-# spec:
-#   minAvailable: 1
-#   selector:
-#     matchLabels:
-#       app.kubernetes.io/name: pgadmin
+    fsGroup: 0
+    privileged: true
+    readOnlyRootFilesystem: false
+    allowPrivilegeEscalation: true  
