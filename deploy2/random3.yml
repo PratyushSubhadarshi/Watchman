@@ -1,9 +1,10 @@
-apiVersion: ops.plivo.com/v1alpha1
-kind: WebService
+apiVersion: v1
+data:
+  PAAS_FRONTNED_REPLICAS: 0
+kind: ConfigMap
 metadata:
-  name: paas
+  name: paas-stack-config
   namespace: devops
-random-value: '12345'
 spec:
   advanced:
     exposePodInfo: true
