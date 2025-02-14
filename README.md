@@ -1,1 +1,2 @@
-## Watchman pratyush the watchman
+The Docker Command Needed to be used to run the Application is here as follows : 
+"docker run --rm -v < File needed to be mounted , PATH of the file in host machine >:< Directory PATH where the file is going to be stored "eg.- /app/input_data.py" >  -e GITHUB_URL= < Repository URL > -e GITHUB_TOKEN= < GITHUB TOKEN from Secret Manager > -e GIT_COMMITTER_NAME= < "Name of Commiter" > -e GIT_COMMITTER_EMAIL= <"Committer Email ID "> < Name of the Image > --scale-type < Specify the scale type "Scale_down" or "Scale_up" > 
